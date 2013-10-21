@@ -1,0 +1,28 @@
+// This file is handled through puppet. Do not modify directly!
+<%
+if !zones.empty?
+  zones.keys.sort.each do |key|
+    zone = zones[key]
+    if ipaddresses.include?(zone['master']) %>
+zone "<%= key %>" {
+	type master;
+	file "/etc/bind/data/<%= key %>";
+	allow-transfer { <%= zone['slaves'].join("; ") %>; ::1; 127.0.0.1; };
+	allow-update { 127.0.0.1; ::1; <%= zone['master'] %>; };
+};
+<%  else
+      did_slave = false
+      zone['slaves'].each do |slave|
+        if !did_slave && ipaddresses.include?(slave) %>
+zone "<%= key %>" {
+	type slave;
+	file "/etc/bind/data/<%= key %>";
+	masters { <%= zone['master'] %>; };
+};
+<%
+	  did_slave = true
+        end
+      end
+    end
+  end
+end %>
