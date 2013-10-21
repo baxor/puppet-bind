@@ -18,21 +18,24 @@ How?
 
 You may wish to update the template files. "ncl.erb" is used to generate
 named.conf.local, "nco.erb" is used for named.conf.options, and
-"zonetmpl.erb" is used for the initial content of a zone file. This is
+"zonetmpl.erb" is used for the initial content of a zone file. The latter is
 not updated afterwards, any changes are done through nsupdate.
 
 You need to do two things: define a zone, and add DNS entries to the
 zone. For the first, you should include the bind class on your
 nameservers. You'll want to define something in hiera, e.g.:
 
+<pre>
  ---
  bind::listen_on: 
    - 192.168.1.1
+</pre>
 
 This will make bind listen on the specified IP addresses. It will also
 be used to decide whether bind is master or slave for a given zone (see
 below). This is obviously data that's specific to one nameserver
 
+<pre>
  ---
  bind::zones:
    zone1.example.com:
@@ -44,6 +47,7 @@ below). This is obviously data that's specific to one nameserver
      master: 192.168.1.2
      slaves:
        - 192.168.1.1
+</pre>
 
 This specifies all the zones that we have, and tells the nameservers
 for which zones they should be the master, and for which zones they
@@ -61,6 +65,7 @@ right if you have just one IP address.
 
 To actually add something to the DNS zone, use the dnsentry custom type:
 
+<pre>
  dnsentry { "webserver_a_record":
    nametype => "www.example.com a", # namevar
    ttl => 86400, # the default
@@ -68,6 +73,7 @@ To actually add something to the DNS zone, use the dnsentry custom type:
    rrdata => [ "192.168.1.1", "192.168.1.2" ]
    ensure => present,
  }
+</pre>
 
 This will use dig and nsupdate to read data and/or perform any changes.
 
