@@ -70,7 +70,7 @@ To actually add something to the DNS zone, use the dnsentry custom type:
 dnsentry { "webserver_a_record":
   nametype => "www.example.com a", # namevar
   ttl => 86400, # the default
-  class => "IN", # the default
+  rrclass => "IN", # the default
   rrdata => [ "192.168.1.1", "192.168.1.2" ]
   ensure => present,
 }
