@@ -100,3 +100,6 @@ Known issues
   Patches welcome.
 - `bind::listen_on` doesn't actually influence the named.conf.options
   file yet. This will be fixed when I get around to it.
+- The zone file entries are currently configured to accept updates, by
+  IP, from the master only. A better way would be to allow updates
+  through TSIG-signed DDNS requests, but that's a bit more involved.
