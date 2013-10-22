@@ -1,4 +1,4 @@
-name 'wouter-bind'
+name 'bind'
 version '1.0.0'
 source 'git://github.com/yoe/puppet-bind.git'
 author 'Wouter Verhelst'
