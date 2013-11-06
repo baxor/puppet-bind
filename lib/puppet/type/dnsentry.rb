@@ -38,7 +38,7 @@ Puppet::Type.newtype(:dnsentry) do
   end
 
   newproperty(:rrclass) do
-    desc "RR class"
+    desc "RR class."
 
     defaultto "IN"
 
