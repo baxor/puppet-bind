@@ -1,5 +1,5 @@
 name 'bind'
-version '1.0.0'
+version '1.1.0'
 source 'git://github.com/yoe/puppet-bind.git'
 author 'Wouter Verhelst'
 description 'BIND nameserver management'
