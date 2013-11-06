@@ -1,3 +1,4 @@
+<% require 'ipaddr' -%>
 // This file is managed through puppet. Do not edit directly!
 options {
         directory "/var/cache/bind";
@@ -18,7 +19,20 @@ options {
         //};
 
         auth-nxdomain no;    # conform to RFC1035
-        listen-on-v6 { any; };
+<% 
+   v4addrs = Array.new
+   v6addrs = Array.new
+   ipaddresses.each do |ipaddress|
+      parsed = IPAddr.new ipaddress
+      if parsed.ipv4?
+        v4addrs << ipaddress
+      end
+      if parsed.ipv6?
+        v6addrs << ipaddress
+      end
+    end -%>
+        listen-on { <%= v4addrs.length > 0 ? v4addrs.join("; ") : "any" -%>; };
+        listen-on-v6 { <%= v6addrs.length > 0 ? v6addrs.join("; ") : "any" -%>; };
 <% if !@allow_recursion.empty? -%>
 	allow-recursion { <%= @allow_recursion.join("; ") %>; };
 <% end -%>
