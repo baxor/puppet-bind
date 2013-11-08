@@ -29,37 +29,51 @@ nameservers. You'll want to define something in hiera, e.g.:
 <pre>
 ---
 bind::listen_on: 
-  - 192.168.1.1
+  - 192.0.2.1
 </pre>
 
 This will make bind listen on the specified IP addresses. It will also
 be used to decide whether bind is master or slave for a given zone (see
-below). This is obviously data that's specific to one nameserver
+below). This is obviously data that's specific to one nameserver.
+
+Note that you may also specify IPv6 addresses:
+
+<pre>
+---
+bind::listen_on:
+  - 192.0.2.1
+  - 2001:db8::1
+</pre>
 
 <pre>
 ---
 bind::zones:
   zone1.example.com:
-    master: 192.168.1.1
+    master: 192.0.2.1
     slaves:
-      - 192.168.1.2
-      - 192.168.1.3
+      - 198.51.100.1
+      - 2001:db8::1
   zone2.example.com:
-    master: 192.168.1.2
+    master: 198.51.100.1
     slaves:
-      - 192.168.1.1
+      - 192.0.2.1
 </pre>
 
 This specifies all the zones that we have, and tells the nameservers
 for which zones they should be the master, and for which zones they
 should be the slave.
 
-In the above example, the name server which has 192.168.1.1 in its
+In the above example, the name server which has 192.0.2.1 in its
 `bind::listen_on` value is master for hosts in `zone1.example.com`, with
-`192.168.1.2` and `192.168.1.3` being slaves; and the name server
-listening on `192.168.1.2` is master for hosts in `zone2.example.com`,
-with `192.168.1.1` slave. The `named.conf.local` file will be generated
+`198.51.100.1` and `2001:db8::1` being slaves; and the name server
+listening on `198.51.100.1` is master for hosts in `zone2.example.com`,
+with `192.0.2.1` slave. The `named.conf.local` file will be generated
 with that in mind.
+
+In case the server on `198.51.100.1` happens to be the same server as
+the one on `2001:db8::1` (as in the last `bind::listen_on` example),
+then only a master block will be generated; so it's safe to have a
+server be listed multiple times.
 
 `bind::listen_on` defaults to the value of the `ipaddress` fact, which
 is probably right if you have just one IP address.
