@@ -122,3 +122,5 @@ Known issues
 - The zone file entries are currently configured to accept updates, by
   IP, from the master only. A better way would be to allow updates
   through TSIG-signed DDNS requests, but that's a bit more involved.
+
+ -- Wouter Verhelst, <w@uter.be>
