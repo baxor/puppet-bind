@@ -1,7 +1,8 @@
 class bind(
 		$zones = hiera('bind::zones', {}),
 		$allow_recursion=hiera('bind::allow_recursion',[]),
-		$ipaddresses = hiera('bind::listen_on', [ $ipaddress ])
+		$ipaddresses = hiera('bind::listen_on', [ $ipaddress ]),
+		$ncotempl = hiera('bind::ncotempl', "bind/nco.erb")
 	  )
 {
 	$zonenames = keys($zones)
@@ -10,7 +11,7 @@ class bind(
 		ensure => present,
 		owner => "root",
 		group => "bind",
-		content => template("bind/nco.erb"),
+		content => template($ncotempl),
 		notify => Service['bind9'],
 		require => Package['bind9'],
 	}
