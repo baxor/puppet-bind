@@ -10,6 +10,10 @@ copy zonefiles around. In the best case those zonefiles would be
 generated; but still, that is precisely what I do *not* want to do, so
 hence this module.
 
+Instead, I think a bind module should allow one to define _zone file
+entries_, and use the normal AXFR/IXFR DNS calls to distribute changes.
+That's precisely what this module does.
+
 Also, I used this module to learn how to write a custom type for puppet.
 Given that, there's bound to be some ugliness in there, but it seems to
 work for me. Bug reports are certainly welcome :)
@@ -99,6 +103,10 @@ dnsentry { "webserver_a_record":
 
 This will use `dig` and `nsupdate` to read data and/or perform any
 changes.
+
+You need to realize the `dnsentry` on the master nameserver for the
+update to work, or you can use distributed types (the `bind` class
+already includes the relevant `Dnsentry <<||>>` statement).
 
 Note the special format of the "nametype" property: `name <space> type`.
 Since an A record is absolutely not the same thing as a CNAME or a TXT
