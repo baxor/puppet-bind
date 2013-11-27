@@ -78,6 +78,13 @@ server be listed multiple times.
 `bind::listen_on` defaults to the value of the `ipaddress` fact, which
 is probably right if you have just one IP address.
 
+Once you've done that, all you need to do now is to include the `bind`
+class on your nameservers, with no options; everything will be set up
+correctly. If you ever move things around in hiera, then the zone file
+entries in `named.conf.local` will be updated automatically (but the
+zone files _themselves_ will not; this may be fixed in a future release,
+but for now you'll have to update the SOA field yourself).
+
 To actually add something to the DNS zone, use the dnsentry custom type:
 
 <pre>
