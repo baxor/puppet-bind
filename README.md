@@ -30,11 +30,9 @@ You need to do two things: define a zone, and add DNS entries to the
 zone. For the first, you should include the bind class on your
 nameservers. You'll want to define something in hiera, e.g.:
 
-<pre>
----
-bind::listen_on: 
-  - 192.0.2.1
-</pre>
+    ---
+    bind::listen_on: 
+      - 192.0.2.1
 
 This will make bind listen on the specified IP addresses. It will also
 be used to decide whether bind is master or slave for a given zone (see
@@ -42,26 +40,22 @@ below). This is obviously data that's specific to one nameserver.
 
 Note that you may also specify IPv6 addresses:
 
-<pre>
----
-bind::listen_on:
-  - 192.0.2.1
-  - 2001:db8::1
-</pre>
-
-<pre>
----
-bind::zones:
-  zone1.example.com:
-    master: 192.0.2.1
-    slaves:
-      - 198.51.100.1
-      - 2001:db8::1
-  zone2.example.com:
-    master: 198.51.100.1
-    slaves:
+    ---
+    bind::listen_on:
       - 192.0.2.1
-</pre>
+      - 2001:db8::1
+
+    ---
+    bind::zones:
+      zone1.example.com:
+        master: 192.0.2.1
+        slaves:
+          - 198.51.100.1
+          - 2001:db8::1
+      zone2.example.com:
+        master: 198.51.100.1
+        slaves:
+          - 192.0.2.1
 
 This specifies all the zones that we have, and tells the nameservers
 for which zones they should be the master, and for which zones they
@@ -91,15 +85,13 @@ but for now you'll have to update the SOA field yourself).
 
 To actually add something to the DNS zone, use the dnsentry custom type:
 
-<pre>
-dnsentry { "webserver_a_record":
-  nametype => "www.example.com a", # namevar
-  ttl => 86400, # the default
-  rrclass => "IN", # the default
-  rrdata => [ "192.168.1.1", "192.168.1.2" ]
-  ensure => present,
-}
-</pre>
+    dnsentry { "webserver_a_record":
+      nametype => "www.example.com a", # namevar
+      ttl => 86400, # the default
+      rrclass => "IN", # the default
+      rrdata => [ "192.168.1.1", "192.168.1.2" ]
+      ensure => present,
+    }
 
 This will use `dig` and `nsupdate` to read data and/or perform any
 changes.
