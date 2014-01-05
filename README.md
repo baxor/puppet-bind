@@ -34,16 +34,17 @@ nameservers. You'll want to define something in hiera, e.g.:
     bind::listen_on: 
       - 192.0.2.1
 
-This will make bind listen on the specified IP addresses. It will also
-be used to decide whether bind is master or slave for a given zone (see
-below). This is obviously data that's specific to one nameserver.
-
 Note that you may also specify IPv6 addresses:
 
     ---
     bind::listen_on:
       - 192.0.2.1
       - 2001:db8::1
+
+This will make bind listen on the specified IP addresses. It will also
+be used to decide whether bind is master or slave for a given zone (see
+below). This is obviously data that's specific to one nameserver.
+
 
     ---
     bind::zones:
