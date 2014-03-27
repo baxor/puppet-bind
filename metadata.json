@@ -1,0 +1,112 @@
+{
+  "operatingsystem_support": [
+    { "operatingsystem": "Debian" },
+    { "operatingsystem": "Ubuntu" }
+  ],
+  "name": "wouter-bind",
+  "version": "1.2.0",
+  "source": "git://github.com/yoe/puppet-bind.git",
+  "author": "Wouter Verhelst",
+  "license": "GPL 2.0",
+  "summary": "UNKNOWN",
+  "description": "BIND nameserver management",
+  "project_page": "https://github.com/yoe/puppet-bind",
+  "dependencies": [
+    {
+      "name": "puppetlabs/stdlib",
+      "version_requirement": ">=3.2.0"
+    }
+  ],
+  "types": [
+    {
+      "name": "dnsentry",
+      "doc": "Manages a DNS entry in a BIND server using nsupdate.",
+      "properties": [
+        {
+          "name": "ensure",
+          "doc": "The basic property that the resource should be in.\n\nValid values are `present`, `absent`. "
+        },
+        {
+          "name": "rrdata",
+          "doc": "data for the RR\n\n"
+        },
+        {
+          "name": "rrclass",
+          "doc": "RR class.\n\nValid values are `IN`, `CH`, `HS`. "
+        },
+        {
+          "name": "ttl",
+          "doc": "TTL for this RR\n\n"
+        }
+      ],
+      "parameters": [
+        {
+          "name": "nametype",
+          "doc": "the RR name and type\n\n"
+        }
+      ],
+      "providers": [
+        {
+          "name": "nsupdate",
+          "doc": "* Required binaries: `dig`, `nsupdate`."
+        }
+      ]
+    },
+    {
+      "name": "dnskey",
+      "doc": "Manages a key in a BIND server.",
+      "properties": [
+        {
+          "name": "ensure",
+          "doc": "The basic property that the resource should be in.\n\nValid values are `present`, `absent`. "
+        }
+      ],
+      "parameters": [
+        {
+          "name": "subject",
+          "doc": "The subject (username, hostname, zone name, ...) for this key.\n\n"
+        },
+        {
+          "name": "type",
+          "doc": "The type of this key\n\nValid values are `KSK`, `ZSK`, `TSIG`. "
+        },
+        {
+          "name": "bitsize",
+          "doc": "The bit size of this key. 0 means to use BIND's internal defaults.\n\n"
+        },
+        {
+          "name": "nsec3",
+          "doc": "Whether to use NSEC3 rather than NSEC\n\nValid values are `true`, `false`. "
+        },
+        {
+          "name": "pubkey",
+          "doc": "The public half of this key. If absent, the key is generated. If present for a KSK or ZSK, the private key must be specified too.\n\n"
+        },
+        {
+          "name": "privkey",
+          "doc": "The private half of this key. If present, the public key must be specified too.\n\n"
+        }
+      ],
+      "providers": [
+        {
+          "name": "dnsseckeygen",
+          "doc": "* Required binaries: `dnssec-keygen`."
+        }
+      ]
+    }
+  ],
+  "checksums": {
+    "COPYING": "b234ee4d69f5fce4486a80fdaf4a4263",
+    "Modulefile": "3f80e1825ce4ab520eb4d252f1215cc0",
+    "README.md": "81724b44ba7e8a35d36acd6bd7bcdc1e",
+    "lib/puppet/provider/dnsentry/nsupdate.rb": "fcd05f67ba641f938feb94f04ade7537",
+    "lib/puppet/provider/dnskey/dnsseckeygen.rb": "58914c45132e2bfe400bb6d1399c5c20",
+    "lib/puppet/type/dnsentry.rb": "5958b63da708ffe0c51de2c82be59a3f",
+    "lib/puppet/type/dnskey.rb": "5fd3ea6d22698383dd13ed9b9a3b249e",
+    "manifests/init.pp": "7bf3fa907040dc99c02b5610f0bf890a",
+    "manifests/zonefile.pp": "cd65f65283b2a8e6a121848479ffc71c",
+    "templates/ncl.erb": "918ff5c4a7ca1e055f0f3122968d4975",
+    "templates/nco.erb": "68b5511a43f9313ea0076da6b0388874",
+    "templates/zonetmpl.erb": "581b90ddc6e8bf476b7b776e33df1faa"
+  }
+}
