@@ -72,6 +72,9 @@ You'll also need to specify the zones; this data would be specified in a
         slaves:
           - 198.51.100.1
           - 2001:db8::1
+	updatepols:
+	  - grant * self
+	  - grant wouterkey zonesuby any
       zone2.example.com:
         master: 198.51.100.1
         slaves:
@@ -95,6 +98,12 @@ server be listed multiple times.
 
 `bind::listen_on` defaults to the value of the `ipaddress` fact, which
 is probably right if you have just one IP address.
+
+The "updatepols" key allows to specify update policies for manual
+administration of the zone, should this be wanted. Note that an update
+policy of the form `grant local-ddns zonesub any` is silently added to
+this list (this is why you should not change the name of the
+`local-ddns` key).
 
 Once you've done that, all you need to do now is to include the `bind`
 class on your nameservers, with no options; everything will be set up
