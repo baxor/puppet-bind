@@ -143,10 +143,29 @@ then all RRs of the given type are removed. If an rrdata attribute was
 presented, however, then only the RRs of the given type with the given
 data will be removed.
 
+Code status
+===========
+
 Known issues
 ------------
 
 - The puppet class only works on Debian (and derivatives) for now.
   Patches welcome.
+
+Planned features
+----------------
+
+- Transparent DNSSEC support. This will be something where you say
+  `bind::dnssec: true` or similar in hiera, and everything else will
+  happen magically. Might require some extra custom types, but we're not
+  there yet.
+
+Changelog
+---------
+
+- 1.0.0: Initial release
+- 1.1.0: v6 support
+- 1.2.0: use TSIG updates (with local-ddns key) rather than allow-update
+  stanzas. Also, add support for random options in the `options` block.
 
  -- Wouter Verhelst, <w@uter.be>
