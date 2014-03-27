@@ -8,7 +8,7 @@ zone "<%= key %>" {
 	type master;
 	file "/etc/bind/data/<%= key %>";
 	allow-transfer { <%= zone['slaves'].join("; ") %>; ::1; 127.0.0.1; };
-	allow-update { 127.0.0.1; ::1; <%= zone['master'] %>; };
+	update-policy local;
 };
 <%  else
       did_slave = false

@@ -105,7 +105,7 @@ Puppet::Type.type(:dnsentry).provide(:nsupdate) do
     file = Tempfile.new('nsupdate-create-')
     file.write(commandstring)
     file.close
-    nsupdate(file.path)
+    nsupdate('-l', file.path)
     #file.unlink
     @dontflush = true
   end
@@ -123,7 +123,7 @@ Puppet::Type.type(:dnsentry).provide(:nsupdate) do
     file = Tempfile.new('nsupdate-destroy-')
     file.write(commandstring)
     file.close
-    nsupdate(file.path)
+    nsupdate('-l', file.path)
     #file.unlink
     @dontflush = true
   end
@@ -155,7 +155,7 @@ Puppet::Type.type(:dnsentry).provide(:nsupdate) do
     file = Tempfile.new('nsupdate-flush-')
     file.write(commandstring)
     file.close
-    nsupdate(file.path)
+    nsupdate('-l', file.path)
     #file.unlink
   end
 end
