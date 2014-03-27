@@ -30,6 +30,12 @@ options {
       if parsed.ipv6?
         v6addrs << ipaddress
       end
+      if v4addrs.length > 0
+        v4addrs << "127.0.0.1"
+      end
+      if v6addrs.length > 0
+        v6addrs << "::1"
+      end
     end -%>
         listen-on { <%= v4addrs.length > 0 ? v4addrs.join("; ") : "any" -%>; };
         listen-on-v6 { <%= v6addrs.length > 0 ? v6addrs.join("; ") : "any" -%>; };
@@ -38,7 +44,6 @@ options {
 <% end -%>
 <% if !@options.empty? -%>
      <%= @options.join(";\n\t") %>;
-<%   end
-   end -%>
+<% end -%>
 };
 

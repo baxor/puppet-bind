@@ -5,7 +5,7 @@ define bind::zonefile($zonename = $title, $ensure = present) {
 	file { "/etc/bind/data/$zonename":
 		content => template("bind/zonetmpl.erb"),
 		ensure => $ensure,
-		replace => false
+		replace => false,
 		notify => Service['bind9']
 	}
 }

@@ -3,12 +3,21 @@
 if !zones.empty?
   zones.keys.sort.each do |key|
     zone = zones[key]
-    if ipaddresses.include?(zone['master']) %>
+    if ipaddresses.include?(zone['master'])
+      zoneslaves = [ "::1", "127.0.0.1" ]
+      updatepols = [ "grant local-ddns zonesub any" ]
+      if !zone['slaves'].nil?
+        zoneslaves << zone['slaves']
+      end
+      if !zone['updatepols'].nil?
+        updatepols << zone['updatepols']
+      end
+ %>
 zone "<%= key %>" {
 	type master;
 	file "/etc/bind/data/<%= key %>";
-	allow-transfer { <%= zone['slaves'].join("; ") %>; ::1; 127.0.0.1; };
-	update-policy { <%= zone['updatepols'].join("; ") %>; grant local-ddns zonesub any; }
+	allow-transfer { <%= zoneslaves.join("; ") %>; };
+	update-policy { <%= updatepols.join("; ") %>; };
 };
 <%  else
       did_slave = false
