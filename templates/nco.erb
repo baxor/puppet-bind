@@ -36,5 +36,9 @@ options {
 <% if !@allow_recursion.empty? -%>
 	allow-recursion { <%= @allow_recursion.join("; ") %>; };
 <% end -%>
+<% if !@options.empty? -%>
+     <%= @options.join(";\n\t") %>;
+<%   end
+   end -%>
 };
 

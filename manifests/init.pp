@@ -2,7 +2,8 @@ class bind(
 		$zones = hiera('bind::zones', {}),
 		$allow_recursion=hiera('bind::allow_recursion',[]),
 		$ipaddresses = hiera('bind::listen_on', [ $ipaddress ]),
-		$ncotempl = hiera('bind::ncotempl', "bind/nco.erb")
+		$ncotempl = hiera('bind::ncotempl', "bind/nco.erb"),
+		$options = hiera('bind::options', [])
 	  )
 {
 	$zonenames = keys($zones)
