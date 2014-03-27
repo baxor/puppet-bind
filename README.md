@@ -72,7 +72,7 @@ You'll also need to specify the zones; this data would be specified in a
         slaves:
           - 198.51.100.1
           - 2001:db8::1
-	updatepols:
+        updatepols:
 	  - grant * self
 	  - grant wouterkey zonesuby any
       zone2.example.com:
