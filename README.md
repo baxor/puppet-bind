@@ -51,16 +51,16 @@ Other per-nameserver options that can be specified:
   queries to this nameserver
 - `bind::ncotempl`: the template to be used to generate the
   `named.conf.options` file (default: `bind/nco.erb`)
-- `bind::options`: any random BIND option you want to add; e.g.,
+- `bind::options`: any random BIND option you want to add.
+
+Note that you should **not** change the `session-keyname` option, or
+things **will** break. The module does not currently check for this;
+this may change in the future. An example would be something like:
 
     ---
     bind::options:
       - tkey-gssapi-keytab "/etc/bind/bind.keytab"
       - dnssec-validation auto
-
-Note that you should **not** change the `session-keyname` option, or
-things **will** break. The module does not currently check for this;
-this may change in the future.
 
 You'll also need to specify the zones; this data would be specified in a
 `common.yaml` or similar:
