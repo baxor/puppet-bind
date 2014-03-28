@@ -167,5 +167,6 @@ Changelog
 - 1.1.0: v6 support
 - 1.2.0: use TSIG updates (with local-ddns key) rather than allow-update
   stanzas. Also, add support for random options in the `options` block.
+- 1.2.1: Remove dnskey custom type again, which wasn't ready yet (whoops)
 
  -- Wouter Verhelst, <w@uter.be>
