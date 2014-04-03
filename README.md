@@ -74,7 +74,7 @@ You'll also need to specify the zones; this data would be specified in a
           - 2001:db8::1
         updatepols:
           - grant * self
-          - grant wouterkey zonesuby any
+          - grant wouterkey zonesub any
       zone2.example.com:
         master: 198.51.100.1
         slaves:
