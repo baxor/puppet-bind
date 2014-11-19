@@ -1,11 +1,11 @@
 define dns::zone (
   $soa = "${::fqdn}.",
   $soa_email = "root.${::fqdn}.",
-  $zone_ttl = '604800',
-  $zone_refresh = '604800',
+  $zone_ttl = '86400',
+  $zone_refresh = '86400',
   $zone_retry = '86400',
-  $zone_expire = '2419200',
-  $zone_minimum = '604800',
+  $zone_expire = '300',
+  $zone_minimum = '60',
   $nameservers = [ $::fqdn ],
   $reverse = false,
   $zone_type = 'master',
@@ -53,7 +53,7 @@ define dns::zone (
       target  => $zone_file,
       content => template("${module_name}/zone_file.erb")
       require     => Class['dns::server::install'],
-      notify      => Class['dns::server::service'],
+      notify      => Class['dns::server::service'],  #TODO:  notify -> Exec['mco-xoom-dns-start'] -- trigger site-wide re-addition of all dns records if the zone file is ever re-written
     }
   }
 }
