@@ -35,51 +35,25 @@ define dns::zone (
   }
 
   $zone_file = "${cfg_dir}/zones/db.${name}"
-  $zone_file_stage = "${zone_file}.stage"
 
   if $ensure == absent {
     file { $zone_file:
       ensure => absent,
     }
   } else {
+    # Include Zone in named.conf.local
+    concat::fragment{"named.conf.local.${name}.include":
+      ensure  => $ensure,
+      target  => "${cfg_dir}/named.conf.local",
+      order   => 3,
+      content => template("${module_name}/zone.erb")
+    } -> 
     # Zone Database
-
-    # Create "fake" zone file without zone-serial
-    concat { $zone_file_stage:
-      owner   => 'bind',
-      group   => 'bind',
-      mode    => '0644',
-      require => [Class['concat::setup'], Class['dns::server']],
-      notify  => Exec["bump-${zone}-serial"]
-    }
-    concat::fragment{"db.${name}.soa":
-      target  => $zone_file_stage,
-      order   => 1,
+    file { "db.${name}"
+      target  => $zone_file,
       content => template("${module_name}/zone_file.erb")
-    }
-
-    # Generate real zone from stage file through replacement _SERIAL_ template
-    # to current timestamp. A real zone file will be updated only at change of
-    # the stage file, thanks to this serial is updated only in case of need.
-    $zone_serial = inline_template('<%= Time.now.to_i %>')
-    exec { "bump-${zone}-serial":
-      command     => "sed '8s/_SERIAL_/${zone_serial}/' ${zone_file_stage} > ${zone_file}",
-      path        => ['/bin', '/sbin', '/usr/bin', '/usr/sbin'],
-      refreshonly => true,
-      provider    => posix,
-      user        => 'bind',
-      group       => 'bind',
       require     => Class['dns::server::install'],
       notify      => Class['dns::server::service'],
     }
   }
-
-  # Include Zone in named.conf.local
-  concat::fragment{"named.conf.local.${name}.include":
-    ensure  => $ensure,
-    target  => "${cfg_dir}/named.conf.local",
-    order   => 3,
-    content => template("${module_name}/zone.erb")
-  }
-
 }
