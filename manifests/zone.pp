@@ -52,8 +52,22 @@ define dns::zone (
     file { "db.${name}"
       target  => $zone_file,
       content => template("${module_name}/zone_file.erb")
+      replace => false,
+      require => Class['dns::server::install'],
+      notify  => Class['dns::server::service'],  #TODO:  notify -> Exec['mco-xoom-dns-start'] -- trigger site-wide re-addition of all dns records if the zone file is ever re-written
+    }  
+
+    $zone_serial = inline_template('<%= Time.now.to_i %>')
+    exec { "bump-${zone}-serial":
+      command     => "sed '8s/_SERIAL_/${zone_serial}/' ${zone_file}",
+      path        => ['/bin', '/sbin', '/usr/bin', '/usr/sbin'],
+      refreshonly => true,
+      subscribe   => File["db.${name}"],
+      provider    => posix,
+      user        => 'bind',
+      group       => 'bind',
       require     => Class['dns::server::install'],
-      notify      => Class['dns::server::service'],  #TODO:  notify -> Exec['mco-xoom-dns-start'] -- trigger site-wide re-addition of all dns records if the zone file is ever re-written
+      notify      => Class['dns::server::service'],
     }
   }
 }
