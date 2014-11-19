@@ -31,7 +31,7 @@ class dns::server::config (
     group   => $group,
     mode    => '0644',
     require => [
-      File['/etc/bind'],
+      File[$cfg_dir],
       Class['dns::server::install']
     ],
     notify  => Class['dns::server::service'],
