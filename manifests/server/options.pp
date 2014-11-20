@@ -17,11 +17,12 @@
 #
 define dns::server::options(
   $forwarders = [],
+  $allow_query = [],
+  $allow_transfer = [],
   $allow_recursion = [],
   $check_names_master = undef,
   $check_names_slave = undef,
   $check_names_response = undef,
-  $allow_query = [],
 ) {
   $valid_check_names = ['fail', 'warn', 'ignore']
 
@@ -30,6 +31,7 @@ define dns::server::options(
   }
 
   validate_array($forwarders)
+  validate_array($allow_transfer)
   validate_array($allow_recursion)
   if $check_names_master != undef and !member($valid_check_names, $check_names_master) {
     fail("The check name policy check_names_master must be ${valid_check_names}")
@@ -50,6 +52,13 @@ define dns::server::options(
     require => [File[$::dns::server::params::cfg_dir], Class['::dns::server::install']],
     content => template("${module_name}/named.conf.options.erb"),
     notify  => Class['::dns::server::service'],
+  }
+
+  file { '/etc/bind/rndc.key':
+    owner   => $::dns::server::params::owner,
+    group   => $::dns::server::params::group,
+    ensure  => present, 
+    source  => 'puppet:///modules/dns/rndc.key', 
   }
 
 }

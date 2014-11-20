@@ -1,7 +1,5 @@
-;
 ; BIND data file for <%= @zone %> zone.
 ; File managed by puppet.
-;
 $ORIGIN	<%= @zone %>.
 $TTL	<%= @zone_ttl %>
 @	IN	SOA	<%= @soa %>. <%= @soa_email %>. (
@@ -15,3 +13,4 @@ $TTL	<%= @zone_ttl %>
 @		IN	NS	<%= nameserver -%>.
 <% end -%>
 ;
+; END_SOA

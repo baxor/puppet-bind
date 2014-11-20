@@ -5,17 +5,24 @@ zone "<%= @zone %>" {
 <% end -%>
   file "<%= @zone_file %>";
 <% if @zone_type == 'slave' -%>
-  masters { <%= @slave_masters %>;};
+  masters { <%= scope.function_get_ip_addr @slave_masters %>;};  <%# FIXME: this will not work with more than a single master %>
 <% elsif @zone_type == 'master' -%>
-<% if @allow_transfer -%>
+ <% if @allow_transfer -%>
   allow-transfer {
-<% @allow_transfer.each do |ip| -%>
+  <% @allow_transfer.each do |ip| -%>
   <%= ip %>;
-<% end -%>
+  <% end -%>
   };
-<% end -%>
+ <% end -%>
 
-<% if !@allow_forwarder.empty? -%>
+ <% if @allow_update -%>
+  allow-update {
+  <% @allow_update.each do |entry| -%>
+   <%= entry %>;
+  <% end -%>
+  };
+ <% end -%>
+ <% if !@allow_forwarder.empty? -%>
   forward <%= @forward_policy %>;
   forwarders {
 <% @allow_forwarder.each do |ip| -%>

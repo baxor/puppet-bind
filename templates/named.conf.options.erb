@@ -37,6 +37,14 @@ options {
     };
 <% end -%>
 
+<% if @allow_transfer.size != 0 then -%>
+    allow-transfer {
+    <% @allow_transfer.each do |transfer| -%>
+	<%= transfer -%>;
+    <% end -%>
+    };
+<% end -%>
+
 <% if @check_names_master -%>
 check-names master <%= @check_names_master %>;
 <% end -%>
@@ -58,3 +66,11 @@ check-names response <%= @check_names_response %>;
 	auth-nxdomain no;    # conform to RFC1035
 	listen-on-v6 { any; };
 };
+
+key qa.xoom.com {
+        algorithm HMAC-MD5;
+        secret "U/Z6OJYebSuq1lxoHEemVVrA0jYYgXQpJt9u9rye7/S6WTGrJToLLAZb NQVN6iyar4kJ55wG3ZgH0H1N6rBkXQ==";
+};
+
+include "/etc/bind/rndc.key";
+
