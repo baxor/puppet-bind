@@ -51,7 +51,7 @@ define dns::zone (
     # Zone Database
     file { "db.${name}":
       path    => $zone_file,
-      content => template("${module_name}/zone_file.erb")
+      content => template("${module_name}/zone_file.erb"),
       replace => false,
       require => Class['dns::server::install'],
       notify  => Class['dns::server::service'],  #TODO:  notify -> Exec['mco-xoom-dns-start'] -- trigger site-wide re-addition of all dns records if the zone file is ever re-written
