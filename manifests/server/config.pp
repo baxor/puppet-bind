@@ -3,6 +3,13 @@ class dns::server::config (
   $owner   = $dns::server::params::owner,
   $group   = $dns::server::params::group,
 ) inherits dns::server::params {
+#  if $osfamily =~ /(?i:ubuntu|debian)/ {
+#    $cfg_dir = $dns::server::params::cfg_dir
+  file { "/etc/apparmor.d/local/usr.sbin.named":
+      ensure  => file,
+      content => "$cfg_dir/zones/** rw,"
+  }
+  #}
 
   file { $cfg_dir:
     ensure => directory,
@@ -50,12 +57,5 @@ class dns::server::config (
     target  => "${cfg_dir}/named.conf.local",
     order   => 1,
     content => "// File managed by Puppet.\n"
-  }
-  if $osfamily =~ /(?i:ubuntu|debian)/ {
-    $cfg_dir = $dns::server::params::cfg_dir
-    file { "/etc/apparmor.d/local/usr.sbin.named":
-        ensure  => file,
-        content => "$cfg_dir/zones/** rw,"
-    }
   }
 }
