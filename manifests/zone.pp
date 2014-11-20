@@ -49,7 +49,7 @@ define dns::zone (
       content => template("${module_name}/zone.erb")
     } -> 
     # Zone Database
-    file { "db.${name}"
+    file { "db.${name}":
       path    => $zone_file,
       content => template("${module_name}/zone_file.erb")
       replace => false,
