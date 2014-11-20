@@ -61,7 +61,7 @@ define dns::zone (
 
     $zone_serial = inline_template('<%= Time.now.to_i %>')
     exec { "bump-${zone}-serial":
-      command     => "sed '8s/_SERIAL_/${zone_serial}/' ${zone_file}",
+      command     => "sed -i 's/_SERIAL_/${zone_serial}/' ${zone_file}",
       path        => ['/bin', '/sbin', '/usr/bin', '/usr/sbin'],
       refreshonly => true,
       subscribe   => File["db.${name}"],
