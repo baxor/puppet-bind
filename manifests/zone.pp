@@ -10,6 +10,7 @@ define dns::zone (
   $reverse = false,
   $zone_type = 'master',
   $allow_transfer = [],
+  $allow_update = [],
   $allow_forwarder = [],
   $forward_policy = 'first',
   $slave_masters = undef,
@@ -20,6 +21,7 @@ define dns::zone (
   $cfg_dir = $dns::server::params::cfg_dir
 
   validate_array($allow_transfer)
+  validate_array($allow_update)
   validate_array($allow_forwarder)
   if $dns::server::options::forwarder and $allow_forwarder {
     fatal("You cannot specify a global forwarder and \
