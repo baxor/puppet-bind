@@ -50,7 +50,7 @@ define dns::zone (
     } -> 
     # Zone Database
     file { "db.${name}"
-      target  => $zone_file,
+      path    => $zone_file,
       content => template("${module_name}/zone_file.erb")
       replace => false,
       require => Class['dns::server::install'],
